@@ -10,7 +10,7 @@ const StyledMenuLink = styled.a`
 export const MenuLogo: FC = () => {
 	return (
 		<Link to="/" component={StyledMenuLink}>
-			Word-Keeper
+			Word Keeper
 		</Link>
 	);
 };
