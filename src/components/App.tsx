@@ -1,10 +1,14 @@
-import React, {FC} from "react";
+// Vendor
+import React, { FC, useReducer } from "react";
+import styled from "styled-components";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
+// Components
 import { GlobalStyle } from "components/GlobalStyle";
 import { Menu } from "components/Menu";
-import styled from "styled-components";
-import { Main } from "./Main";
-import { Filter } from "./Filter";
+import { Main } from "components/Main";
+import { Filter } from "components/Filter";
 import {
 	AddToFavorites,
 	Description,
@@ -12,11 +16,13 @@ import {
 	Name,
 	PartOfSpeech,
 	Word,
-} from "./Word";
-import { Words } from "./Words";
-import { FilterSearch } from "./Filter/-Search";
-import { Starred } from "./Starred";
-import { FilterPartOfSpeech } from "./Filter/-PartOfSpeech";
+} from "components/Word";
+import { Words } from "components/Words";
+import { FilterSearch } from "components/Filter/-Search";
+import { Starred } from "components/Starred";
+import { FilterPartOfSpeech } from "components/Filter/-PartOfSpeech";
+// State
+import { initialState, appReducer } from "./Actions";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -30,6 +36,8 @@ const StyledApp = styled.div`
 `;
 
 const App: FC = () => {
+	const [state, dispatch] = useReducer(appReducer, initialState);
+
 	return (
 		<BrowserRouter>
 			<GlobalStyle />
@@ -65,22 +73,24 @@ const App: FC = () => {
 								<FilterSearch />
 								<FilterPartOfSpeech />
 							</Filter>
-							<Words>
-								{new Array(4).fill("").map((e) => (
-									<Word>
-										<Drag />
-										<Name>freedom</Name>
-										<PartOfSpeech>adjective</PartOfSpeech>
-										<Description>
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-											Autem expedita illum inventore libero maxime perferendis
-											quam quo sapiente tempora veritatis. Animi asperiores
-											deserunt iste laudantium porro, quidem repudiandae sint
-											tenetur.
-										</Description>
-									</Word>
-								))}
-							</Words>
+							<DndProvider backend={HTML5Backend}>
+								<Words>
+									{new Array(4).fill("").map((e) => (
+										<Word>
+											<Drag />
+											<Name>freedom</Name>
+											<PartOfSpeech>adjective</PartOfSpeech>
+											<Description>
+												Lorem ipsum dolor sit amet, consectetur adipisicing
+												elit. Autem expedita illum inventore libero maxime
+												perferendis quam quo sapiente tempora veritatis. Animi
+												asperiores deserunt iste laudantium porro, quidem
+												repudiandae sint tenetur.
+											</Description>
+										</Word>
+									))}
+								</Words>
+							</DndProvider>
 						</Starred>
 					</Route>
 				</Switch>
