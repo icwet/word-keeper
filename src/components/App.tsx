@@ -9,27 +9,16 @@ import { GlobalStyle } from "components/GlobalStyle";
 import { Menu } from "components/Menu";
 import { Main } from "components/Main";
 import { Filter } from "components/Filter";
-import {
-	AddToFavorites,
-	Description,
-	Drag,
-	Name,
-	PartOfSpeech,
-	Word,
-} from "components/Word";
+import { AddToFavorites, Description, Drag, Name, PartOfSpeech, Word } from "components/Word";
 import { DraggedWord } from "components/DraggedWord";
 import { Words } from "components/Words";
 import { FilterSearch } from "components/Filter/-Search";
 import { Starred } from "components/Starred";
 import { FilterPartOfSpeech } from "components/Filter/-PartOfSpeech";
 // State
-import {
-	initialState,
-	appReducer,
-	InitialState,
-	Action,
-} from "components/Actions";
-import { ADD_STARRED } from "components/Actions/types";
+import { initialState, appReducer, InitialState, Action } from "components/Actions";
+import { ADD_STARRED, OPEN_MODAL, REMOVE_STARRED } from "components/Actions/types";
+import { Modal } from "./Modal";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -52,6 +41,10 @@ export const AppContext = createContext<{
 
 const App: FC = () => {
 	const [state, dispatch] = useReducer(appReducer, initialState);
+	const onClickStopPropagation: CallableFunction = (event: Event, dispatch: Dispatch<Action>, action: Action) => {
+		event.stopPropagation();
+		dispatch(action);
+	};
 
 	return (
 		<BrowserRouter>
@@ -59,6 +52,7 @@ const App: FC = () => {
 			<AppContext.Provider value={{ state, dispatch }}>
 				<StyledApp>
 					<Menu />
+					{state?.modal && <Modal word={state.modal} />}
 					<Switch>
 						<Route exact path="/">
 							<Main>
@@ -66,19 +60,28 @@ const App: FC = () => {
 									<FilterSearch />
 								</Filter>
 								<Words>
-									{state.words &&
-										state.words.map((e, i) => (
-											<Word key={i}>
-												<Name>{e.name}</Name>
-												<PartOfSpeech>{e.partOfSpeech}</PartOfSpeech>
-												<Description>{e.description}</Description>
+									{state.words?.map((word, i) => {
+										const starredWord = state.starred?.some((starredWord) => starredWord.name === word.name);
+										return (
+											<Word key={i} onClick={() => dispatch({ type: OPEN_MODAL, payload: word })}>
+												<Name>{word.name}</Name>
+												<PartOfSpeech>{word.partOfSpeech}</PartOfSpeech>
+												<Description>{word.description}</Description>
 												<AddToFavorites
-													onClick={() =>
-														dispatch({ type: ADD_STARRED, payload: e })
+													active={starredWord}
+													onClick={
+														starredWord
+															? (e) =>
+																	onClickStopPropagation(e, dispatch, {
+																		type: REMOVE_STARRED,
+																		payload: word,
+																	})
+															: (e) => onClickStopPropagation(e, dispatch, { type: ADD_STARRED, payload: word })
 													}
 												/>
 											</Word>
-										))}
+										);
+									})}
 								</Words>
 							</Main>
 						</Route>
@@ -90,16 +93,25 @@ const App: FC = () => {
 								</Filter>
 								<DndProvider backend={HTML5Backend}>
 									<Words>
-										{state.starred &&
-											state.starred.map((e, i) => (
+										{state.starred?.map((starredWord, i) => {
+											return (
 												<DraggedWord key={i} index={i}>
 													<Drag />
-													<Name>{e.name}</Name>
-													<PartOfSpeech>{e.partOfSpeech}</PartOfSpeech>
-													<Description>{e.description}</Description>
-													<AddToFavorites />
+													<Name>{starredWord.name}</Name>
+													<PartOfSpeech>{starredWord.partOfSpeech}</PartOfSpeech>
+													<Description>{starredWord.description}</Description>
+													<AddToFavorites
+														active={true}
+														onClick={(e) =>
+															onClickStopPropagation(e, dispatch, {
+																type: REMOVE_STARRED,
+																payload: starredWord,
+															})
+														}
+													/>
 												</DraggedWord>
-											))}
+											);
+										})}
 									</Words>
 								</DndProvider>
 							</Starred>

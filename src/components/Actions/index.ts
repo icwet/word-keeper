@@ -6,11 +6,13 @@ import {
 	ADD_STARRED,
 	REMOVE_STARRED,
 	DRAG_CARD,
+	OPEN_MODAL,
+	CLOSE_MODAL,
 } from "./types";
 // Helpers
 import update from "immutability-helper";
 
-type Word = {
+export type Word = {
 	name: string;
 	partOfSpeech: string;
 	description: string;
@@ -19,10 +21,11 @@ type Word = {
 export interface InitialState {
 	words: Word[] | null;
 	starred: Word[] | null;
+	modal: Word | null;
 }
 export interface Action {
 	type: string;
-	payload: any;
+	payload?: any;
 }
 
 export const initialState: InitialState = {
@@ -47,18 +50,22 @@ export const initialState: InitialState = {
 		},
 	],
 	starred: null,
+	modal: null,
 };
 
 export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 	switch (action.type) {
-		case GET_WORDS:
-			return initialState;
-		case LOADING_WORDS:
-			return initialState;
-		case GET_WORDS_SUCCESS:
-			return initialState;
+		case GET_WORDS: {
+			return state;
+		}
+		case LOADING_WORDS: {
+			return state;
+		}
+		case GET_WORDS_SUCCESS: {
+			return state;
+		}
 
-		case ADD_STARRED:
+		case ADD_STARRED: {
 			const word = action.payload;
 			if (state.starred === null) {
 				return {
@@ -78,11 +85,24 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 				...state,
 				starred: state.starred.concat(word),
 			};
+		}
+		case REMOVE_STARRED: {
+			const word = action.payload;
+			const removeStarredWord = state.starred?.filter(
+				(starredWord) => starredWord.name !== word.name
+			);
+			if (removeStarredWord) {
+				return {
+					...state,
+					starred: removeStarredWord,
+				};
+			}
+			return {
+				...state,
+			};
+		}
 
-		case REMOVE_STARRED:
-			return initialState;
-
-		case DRAG_CARD:
+		case DRAG_CARD: {
 			const dragIndex = action.payload.dragIndex;
 			const dragCard = state.starred![dragIndex];
 			const hoverIndex = action.payload.hoverIndex;
@@ -96,7 +116,23 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 				...state,
 				starred: differentOrder,
 			};
-		default:
+		}
+
+		case OPEN_MODAL: {
+			return {
+				...state,
+				modal: action.payload,
+			};
+		}
+		case CLOSE_MODAL: {
+			return {
+				...state,
+				modal: null,
+			};
+		}
+
+		default: {
 			return state;
+		}
 	}
 };

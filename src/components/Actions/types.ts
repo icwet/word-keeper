@@ -10,3 +10,6 @@ export const DRAG_CARD = "DRAG_CARD";
 export const ITEM_TYPES = {
 	WORD: "word",
 };
+// Modal
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";

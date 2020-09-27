@@ -6,7 +6,7 @@ const StyledFilterPartOfSpeech = styled.fieldset`
 	border: none;
 `;
 const StyledLabel = styled.label`
-	color: #fff;
+	color: #000;
 `;
 
 export const FilterPartOfSpeech = () => {

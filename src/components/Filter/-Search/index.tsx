@@ -33,7 +33,7 @@ const Magnify = styled.div`
 export const FilterSearch: FC = () => {
 	return (
 		<Magnify>
-			<StyledFilterSearch placeholder="Type ahead..." />
+			<StyledFilterSearch placeholder="Enter some word..." />
 		</Magnify>
 	);
 };
