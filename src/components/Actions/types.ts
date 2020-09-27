@@ -7,3 +7,6 @@ export const ADD_STARRED = "ADD_STARRED";
 export const REMOVE_STARRED = "REMOVE_STARRED";
 // Dragged cards
 export const DRAG_CARD = "DRAG_CARD";
+export const ITEM_TYPES = {
+	WORD: "word",
+};

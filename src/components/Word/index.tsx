@@ -1,8 +1,10 @@
+// Vendor
 import React, { FC } from "react";
 import styled from "styled-components";
+// Images
 import star from "./img/star.svg";
-
-const StyledWord = styled.div`
+// Styled components
+export const StyledWord = styled.div`
 	max-height: 35px;
 	display: grid;
 	padding: 8px 12px;
@@ -12,7 +14,6 @@ const StyledWord = styled.div`
 	background: #fff;
 	border-radius: 4px;
 `;
-
 export const Drag = styled.div`
 	position: relative;
 	width: 24px;
@@ -34,17 +35,14 @@ export const Drag = styled.div`
 		bottom: -4px;
 	}
 `;
-
 export const Name = styled.p`
 	margin: 0;
 	font-weight: 500;
 `;
-
 export const PartOfSpeech = styled.p`
 	margin: 0;
 	font-style: italic;
 `;
-
 export const Description = styled.p`
 	max-width: 400px;
 	margin: 0;
@@ -52,7 +50,6 @@ export const Description = styled.p`
 	overflow: hidden;
 	text-overflow: ellipsis;
 `;
-
 export const AddToFavorites = styled.div`
 	justify-self: center;
 	width: 18px;

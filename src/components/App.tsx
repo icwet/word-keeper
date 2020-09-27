@@ -1,5 +1,5 @@
 // Vendor
-import React, { FC, useReducer } from "react";
+import React, { FC, useReducer, createContext, Dispatch } from "react";
 import styled from "styled-components";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -17,12 +17,18 @@ import {
 	PartOfSpeech,
 	Word,
 } from "components/Word";
+import { DraggedWord } from "components/DraggedWord";
 import { Words } from "components/Words";
 import { FilterSearch } from "components/Filter/-Search";
 import { Starred } from "components/Starred";
 import { FilterPartOfSpeech } from "components/Filter/-PartOfSpeech";
 // State
-import { initialState, appReducer } from "./Actions";
+import {
+	initialState,
+	appReducer,
+	InitialState,
+	Action,
+} from "components/Actions";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -35,49 +41,32 @@ const StyledApp = styled.div`
 	background: #f0dfc5;
 `;
 
+export const AppContext = createContext<{
+	state: InitialState;
+	dispatch: Dispatch<Action>;
+}>({
+	state: initialState,
+	dispatch: () => null,
+});
+
 const App: FC = () => {
 	const [state, dispatch] = useReducer(appReducer, initialState);
 
 	return (
 		<BrowserRouter>
 			<GlobalStyle />
-			<StyledApp>
-				<Menu />
-				<Switch>
-					<Route exact path="/">
-						<Main>
-							<Filter>
-								<FilterSearch />
-							</Filter>
-							<Words>
-								{new Array(10).fill("").map((e) => (
-									<Word>
-										<Name>freedom</Name>
-										<PartOfSpeech>adjective</PartOfSpeech>
-										<Description>
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-											Autem expedita illum inventore libero maxime perferendis
-											quam quo sapiente tempora veritatis. Animi asperiores
-											deserunt iste laudantium porro, quidem repudiandae sint
-											tenetur.
-										</Description>
-										<AddToFavorites />
-									</Word>
-								))}
-							</Words>
-						</Main>
-					</Route>
-					<Route path="/starred">
-						<Starred>
-							<Filter>
-								<FilterSearch />
-								<FilterPartOfSpeech />
-							</Filter>
-							<DndProvider backend={HTML5Backend}>
+			<AppContext.Provider value={{ state, dispatch }}>
+				<StyledApp>
+					<Menu />
+					<Switch>
+						<Route exact path="/">
+							<Main>
+								<Filter>
+									<FilterSearch />
+								</Filter>
 								<Words>
-									{new Array(4).fill("").map((e) => (
-										<Word>
-											<Drag />
+									{new Array(10).fill("").map((e, i) => (
+										<Word key={i}>
 											<Name>freedom</Name>
 											<PartOfSpeech>adjective</PartOfSpeech>
 											<Description>
@@ -87,14 +76,36 @@ const App: FC = () => {
 												asperiores deserunt iste laudantium porro, quidem
 												repudiandae sint tenetur.
 											</Description>
+											<AddToFavorites />
 										</Word>
 									))}
 								</Words>
-							</DndProvider>
-						</Starred>
-					</Route>
-				</Switch>
-			</StyledApp>
+							</Main>
+						</Route>
+						<Route path="/starred">
+							<Starred>
+								<Filter>
+									<FilterSearch />
+									<FilterPartOfSpeech />
+								</Filter>
+								<DndProvider backend={HTML5Backend}>
+									<Words>
+										{state.starred &&
+											state.starred.map((e, i) => (
+												<DraggedWord key={i} index={i}>
+													<Drag />
+													<Name>{e.name}</Name>
+													<PartOfSpeech>{e.partOfSpeech}</PartOfSpeech>
+													<Description>{e.description}</Description>
+												</DraggedWord>
+											))}
+									</Words>
+								</DndProvider>
+							</Starred>
+						</Route>
+					</Switch>
+				</StyledApp>
+			</AppContext.Provider>
 		</BrowserRouter>
 	);
 };

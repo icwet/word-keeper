@@ -6,7 +6,7 @@ const StyledFilter = styled.div`
 	grid-template-rows: 1fr 4fr;
 	grid-auto-flow: row;
 	padding: 12px;
-	background: #e0e0e0;
+	background: palevioletred;
 	border-radius: 8px;
 `;
 

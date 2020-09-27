@@ -10,21 +10,21 @@ import {
 // Helpers
 import update from "immutability-helper";
 
-interface InitialState {
+export interface InitialState {
 	words: Array<{
 		name: string;
 		partOfSpeech: string;
 		description: string;
-	}>;
-	starred: null | Array<{
+	}> | null;
+	starred: Array<{
 		name: string;
 		partOfSpeech: string;
 		description: string;
-	}>;
+	}> | null;
 }
-interface Action {
+export interface Action {
 	type: string;
-	payload?: {
+	payload: {
 		dragIndex: number;
 		hoverIndex: number;
 	};
@@ -33,25 +33,44 @@ interface Action {
 export const initialState: InitialState = {
 	words: [
 		{
-			name: "freedom",
+			name: "some word",
 			partOfSpeech: "noun",
 			description:
 				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
 		},
 		{
-			name: "freedom",
+			name: "some word",
 			partOfSpeech: "noun",
 			description:
 				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
 		},
 		{
-			name: "freedom",
+			name: "some word",
 			partOfSpeech: "noun",
 			description:
 				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
 		},
 	],
-	starred: null,
+	starred: [
+		{
+			name: "freedom1",
+			partOfSpeech: "noun",
+			description:
+				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
+		},
+		{
+			name: "freedom2",
+			partOfSpeech: "noun",
+			description:
+				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
+		},
+		{
+			name: "freedom3",
+			partOfSpeech: "noun",
+			description:
+				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
+		},
+	],
 };
 
 export const appReducer: Reducer<InitialState, Action> = (state, action) => {
@@ -69,8 +88,20 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 			return initialState;
 
 		case DRAG_CARD:
-			return initialState;
+			const dragIndex = action.payload.dragIndex;
+			const dragCard = state.starred![dragIndex];
+			const hoverIndex = action.payload.hoverIndex;
+			const differentOrder = update(state.starred, {
+				$splice: [
+					[dragIndex, 1],
+					[hoverIndex, 0, dragCard],
+				],
+			});
+			return {
+				...state,
+				starred: differentOrder,
+			};
 		default:
-			return initialState;
+			return state;
 	}
 };

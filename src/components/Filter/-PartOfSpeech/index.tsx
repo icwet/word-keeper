@@ -5,14 +5,17 @@ const StyledFilterPartOfSpeech = styled.fieldset`
 	padding: 12px 0;
 	border: none;
 `;
+const StyledLabel = styled.label`
+	color: #fff;
+`;
 
 export const FilterPartOfSpeech = () => {
 	return (
 		<StyledFilterPartOfSpeech>
-			<label>
+			<StyledLabel>
 				<input type="checkbox" />
 				adjective
-			</label>
+			</StyledLabel>
 		</StyledFilterPartOfSpeech>
 	);
 };
