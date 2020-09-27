@@ -15,10 +15,10 @@ import { Words } from "components/Words";
 import { FilterSearch } from "components/Filter/-Search";
 import { Starred } from "components/Starred";
 import { FilterPartOfSpeech } from "components/Filter/-PartOfSpeech";
+import { Modal } from "../Modal";
 // State
-import { initialState, appReducer, InitialState, Action } from "components/Actions";
-import { ADD_STARRED, OPEN_MODAL, REMOVE_STARRED } from "components/Actions/types";
-import { Modal } from "./Modal";
+import { initialState, appReducer, InitialState, Action } from "components/App/Actions";
+import { ADD_STARRED, OPEN_MODAL, REMOVE_STARRED } from "components/App/Actions/types";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -95,7 +95,7 @@ const App: FC = () => {
 									<Words>
 										{state.starred?.map((starredWord, i) => {
 											return (
-												<DraggedWord key={i} index={i}>
+												<DraggedWord key={i} index={i} onClick={() => dispatch({ type: OPEN_MODAL, payload: starredWord })}>
 													<Drag />
 													<Name>{starredWord.name}</Name>
 													<PartOfSpeech>{starredWord.partOfSpeech}</PartOfSpeech>

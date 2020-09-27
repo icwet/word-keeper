@@ -6,8 +6,8 @@ import styled from "styled-components";
 // Components
 import { StyledWord } from "components/Word";
 // Actions
-import { DRAG_CARD, ITEM_TYPES } from "components/Actions/types";
-import { AppContext } from "components/App";
+import { DRAG_CARD, ITEM_TYPES } from "components/App/Actions/types";
+import { AppContext } from "components/App/App";
 
 interface DragItem {
 	index: number;
@@ -15,6 +15,7 @@ interface DragItem {
 }
 interface DraggedWordProps {
 	index: number;
+	onClick?: () => void;
 }
 
 const StyledDraggedWord = styled(StyledWord)`
@@ -23,7 +24,7 @@ const StyledDraggedWord = styled(StyledWord)`
 	}
 `;
 
-export const DraggedWord: FC<DraggedWordProps> = ({ children, index }) => {
+export const DraggedWord: FC<DraggedWordProps> = ({ children, index, onClick }) => {
 	const ref = useRef<HTMLDivElement>(null);
 	const { dispatch } = useContext(AppContext);
 	const [, drop] = useDrop({
@@ -38,8 +39,7 @@ export const DraggedWord: FC<DraggedWordProps> = ({ children, index }) => {
 				return;
 			}
 			const hoverBoundingRect = ref.current?.getBoundingClientRect();
-			const hoverMiddleY =
-				(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+			const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const clientOffset = monitor.getClientOffset();
 			const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 			if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -60,5 +60,9 @@ export const DraggedWord: FC<DraggedWordProps> = ({ children, index }) => {
 		}),
 	});
 	drag(drop(ref));
-	return <StyledDraggedWord ref={ref}>{children}</StyledDraggedWord>;
+	return (
+		<StyledDraggedWord onClick={onClick} ref={ref}>
+			{children}
+		</StyledDraggedWord>
+	);
 };

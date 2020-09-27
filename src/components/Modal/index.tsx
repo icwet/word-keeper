@@ -1,11 +1,11 @@
 import React, { FC, useContext } from "react";
 import styled from "styled-components";
-import { AppContext } from "components/App";
+import { AppContext } from "components/App/App";
 // State
-import { Word } from "../Actions";
+import { Word } from "../App/Actions";
 // Images
 import cancel from "./img/cancel.svg";
-import { CLOSE_MODAL } from "../Actions/types";
+import { CLOSE_MODAL } from "../App/Actions/types";
 
 interface ModalProps {
 	word: Word;

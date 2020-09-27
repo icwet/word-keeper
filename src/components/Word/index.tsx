@@ -67,9 +67,11 @@ export const AddToFavorites = styled.div<AddToFavoritesProps>`
 	justify-self: center;
 	width: 18px;
 	height: 18px;
-	background: url(${(props) => (props.active ? activeStar : star)})
-		center/contain no-repeat;
+	background: url(${(props) => (props.active ? activeStar : star)}) center/contain no-repeat;
 	cursor: pointer;
+	&:hover {
+		background: url(${activeStar}) center/contain no-repeat;
+	}
 `;
 
 export const Word: FC<WordProps> = ({ children, onClick }) => {
