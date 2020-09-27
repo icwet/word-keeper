@@ -10,30 +10,32 @@ const StarredButton = styled.button`
 	text-align: right;
 `;
 
-const StyledLink = styled.a`
-	position: relative;
-	text-decoration: none;
-	color: #fff;
-	&::before {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: -18px;
-		margin: auto;
-		content: "";
-		display: block;
-		width: 12px;
-		height: 12px;
-		background: url(${star}) center/contain no-repeat;
+const StyledLink = styled.div`
+	a {
+		position: relative;
+		text-decoration: none;
+		color: #fff;
+		&::before {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: -18px;
+			margin: auto;
+			content: "";
+			display: block;
+			width: 12px;
+			height: 12px;
+			background: url(${star}) center/contain no-repeat;
+		}
 	}
 `;
 
 export const MenuStarred: FC = () => {
 	return (
 		<StarredButton>
-			<Link to="/starred" component={StyledLink}>
-				Starred Words
-			</Link>
+			<StyledLink>
+				<Link to="/starred">Starred Words</Link>
+			</StyledLink>
 		</StarredButton>
 	);
 };

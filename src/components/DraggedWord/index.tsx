@@ -1,5 +1,5 @@
 // Vendor
-import React, { FC, useContext, useReducer, useRef } from "react";
+import React, { FC, useContext, useRef } from "react";
 import { DropTargetMonitor, useDrop, useDrag } from "react-dnd";
 import { XYCoord } from "dnd-core";
 import styled from "styled-components";
@@ -53,7 +53,7 @@ export const DraggedWord: FC<DraggedWordProps> = ({ children, index }) => {
 			item.index = hoverIndex;
 		},
 	});
-	const [{ isDragging }, drag] = useDrag({
+	const [, drag] = useDrag({
 		item: { type: ITEM_TYPES.WORD, index },
 		collect: (monitor: any) => ({
 			isDragging: monitor.isDragging(),

@@ -44,7 +44,6 @@ export const PartOfSpeech = styled.p`
 	font-style: italic;
 `;
 export const Description = styled.p`
-	max-width: 400px;
 	margin: 0;
 	white-space: nowrap;
 	overflow: hidden;

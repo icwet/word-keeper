@@ -29,6 +29,7 @@ import {
 	InitialState,
 	Action,
 } from "components/Actions";
+import { ADD_STARRED } from "components/Actions/types";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -65,20 +66,19 @@ const App: FC = () => {
 									<FilterSearch />
 								</Filter>
 								<Words>
-									{new Array(10).fill("").map((e, i) => (
-										<Word key={i}>
-											<Name>freedom</Name>
-											<PartOfSpeech>adjective</PartOfSpeech>
-											<Description>
-												Lorem ipsum dolor sit amet, consectetur adipisicing
-												elit. Autem expedita illum inventore libero maxime
-												perferendis quam quo sapiente tempora veritatis. Animi
-												asperiores deserunt iste laudantium porro, quidem
-												repudiandae sint tenetur.
-											</Description>
-											<AddToFavorites />
-										</Word>
-									))}
+									{state.words &&
+										state.words.map((e, i) => (
+											<Word key={i}>
+												<Name>{e.name}</Name>
+												<PartOfSpeech>{e.partOfSpeech}</PartOfSpeech>
+												<Description>{e.description}</Description>
+												<AddToFavorites
+													onClick={() =>
+														dispatch({ type: ADD_STARRED, payload: e })
+													}
+												/>
+											</Word>
+										))}
 								</Words>
 							</Main>
 						</Route>
@@ -97,6 +97,7 @@ const App: FC = () => {
 													<Name>{e.name}</Name>
 													<PartOfSpeech>{e.partOfSpeech}</PartOfSpeech>
 													<Description>{e.description}</Description>
+													<AddToFavorites />
 												</DraggedWord>
 											))}
 									</Words>

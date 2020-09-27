@@ -10,67 +10,43 @@ import {
 // Helpers
 import update from "immutability-helper";
 
+type Word = {
+	name: string;
+	partOfSpeech: string;
+	description: string;
+};
+
 export interface InitialState {
-	words: Array<{
-		name: string;
-		partOfSpeech: string;
-		description: string;
-	}> | null;
-	starred: Array<{
-		name: string;
-		partOfSpeech: string;
-		description: string;
-	}> | null;
+	words: Word[] | null;
+	starred: Word[] | null;
 }
 export interface Action {
 	type: string;
-	payload: {
-		dragIndex: number;
-		hoverIndex: number;
-	};
+	payload: any;
 }
 
 export const initialState: InitialState = {
 	words: [
 		{
-			name: "some word",
+			name: "some word1",
 			partOfSpeech: "noun",
 			description:
 				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
 		},
 		{
-			name: "some word",
+			name: "some word2",
 			partOfSpeech: "noun",
 			description:
 				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
 		},
 		{
-			name: "some word",
+			name: "some word3",
 			partOfSpeech: "noun",
 			description:
 				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
 		},
 	],
-	starred: [
-		{
-			name: "freedom1",
-			partOfSpeech: "noun",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-		{
-			name: "freedom2",
-			partOfSpeech: "noun",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-		{
-			name: "freedom3",
-			partOfSpeech: "noun",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-	],
+	starred: null,
 };
 
 export const appReducer: Reducer<InitialState, Action> = (state, action) => {
@@ -83,7 +59,26 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 			return initialState;
 
 		case ADD_STARRED:
-			return initialState;
+			const word = action.payload;
+			if (state.starred === null) {
+				return {
+					...state,
+					starred: Array.of(word),
+				};
+			}
+			const findDuplicateWord = state.starred.findIndex(
+				(starredWord) => starredWord.name === word.name
+			);
+			if (findDuplicateWord !== -1) {
+				return {
+					...state,
+				};
+			}
+			return {
+				...state,
+				starred: state.starred.concat(word),
+			};
+
 		case REMOVE_STARRED:
 			return initialState;
 
