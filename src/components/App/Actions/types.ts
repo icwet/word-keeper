@@ -13,3 +13,5 @@ export const ITEM_TYPES = {
 // Modal
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
+// Filter
+export const FILTER_WORDS = "FILTER_WORDS";

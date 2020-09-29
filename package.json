@@ -68,7 +68,7 @@
 		}
 	},
 	"prettier": {
-		"printWidth": 140
+		"printWidth": 120
 	},
 	"lint-staged": {
 		"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
