@@ -2,7 +2,7 @@ import React, { FC, useContext } from "react";
 import styled from "styled-components";
 // State
 import { AppContext } from "components/App/App";
-import { FILTER_WORDS } from "components/App/Actions/types";
+import { filterWords } from "components/App/Actions";
 
 const StyledFilterPartOfSpeech = styled.fieldset`
 	display: grid;
@@ -21,11 +21,7 @@ export const FilterPartOfSpeech: FC = () => {
 				const { name, checked } = filterParam;
 				return (
 					<StyledLabel key={i}>
-						<input
-							type="checkbox"
-							value={name}
-							onChange={() => dispatch({ type: FILTER_WORDS, payload: { name, checked: !checked } })}
-						/>
+						<input type="checkbox" value={name} onChange={() => dispatch(filterWords({ name, checked: !checked }))} />
 						{name}
 					</StyledLabel>
 				);

@@ -9,31 +9,13 @@ import {
 	OPEN_MODAL,
 	CLOSE_MODAL,
 	FILTER_WORDS,
+	InitialState,
+	Action,
+	Word,
+	Filter,
 } from "./types";
 // Helpers
 import update from "immutability-helper";
-
-export type Word = {
-	name: string;
-	partOfSpeech: string;
-	description: string;
-};
-export type Filter = {
-	name: string;
-	checked: boolean;
-};
-
-export interface InitialState {
-	words: Word[] | null;
-	starred: Word[] | null;
-	modal: Word | null;
-	filters: Filter[] | null;
-	filteredWords: Word[] | null;
-}
-export interface Action {
-	type: string;
-	payload?: any;
-}
 
 export const initialState: InitialState = {
 	words: [
@@ -67,6 +49,22 @@ export const initialState: InitialState = {
 	filters: null,
 	filteredWords: null,
 };
+
+export const getWords = () => ({ type: GET_WORDS });
+export const loadingWords = () => ({ type: LOADING_WORDS });
+export const getWordsSuccess = () => ({ type: GET_WORDS_SUCCESS });
+export const addStarred = (word: Word) => ({ type: ADD_STARRED, payload: word });
+export const removeStarred = (word: Word) => ({ type: REMOVE_STARRED, payload: word });
+export const dragCard = (dragIndex: number, hoverIndex: number) => ({
+	type: DRAG_CARD,
+	payload: { dragIndex, hoverIndex },
+});
+export const openModal = (word: Word) => ({ type: OPEN_MODAL, payload: word });
+export const closeModal = () => ({ type: CLOSE_MODAL });
+export const filterWords = (filter: Filter) => ({
+	type: FILTER_WORDS,
+	payload: { name: filter.name, checked: filter.checked },
+});
 
 export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 	switch (action.type) {

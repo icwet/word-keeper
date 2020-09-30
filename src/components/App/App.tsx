@@ -15,10 +15,10 @@ import { Words } from "components/Words";
 import { FilterSearch } from "components/Filter/-Search";
 import { Starred } from "components/Starred";
 import { FilterPartOfSpeech } from "components/Filter/-PartOfSpeech";
-import { Modal } from "../Modal";
+import { Modal } from "components/Modal";
 // State
-import { initialState, appReducer, InitialState, Action } from "components/App/Actions";
-import { ADD_STARRED, OPEN_MODAL, REMOVE_STARRED } from "components/App/Actions/types";
+import { initialState, appReducer, openModal, removeStarred, addStarred } from "components/App/Actions";
+import { InitialState, Action } from "components/App/Actions/types";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -27,7 +27,7 @@ const StyledApp = styled.div`
 	right: 0;
 	bottom: 0;
 	margin: auto;
-	padding: 24px;
+	padding: 24px 13% 24px 13%;
 	background: #f0dfc5;
 `;
 
@@ -63,7 +63,7 @@ const App: FC = () => {
 									{state.words?.map((word, i) => {
 										const starredWord = state.starred?.some((starredWord) => starredWord.name === word.name);
 										return (
-											<Word key={i} onClick={() => dispatch({ type: OPEN_MODAL, payload: word })}>
+											<Word key={i} onClick={() => dispatch(openModal(word))}>
 												<Name>{word.name}</Name>
 												<PartOfSpeech>{word.partOfSpeech}</PartOfSpeech>
 												<Description>{word.description}</Description>
@@ -71,12 +71,8 @@ const App: FC = () => {
 													active={starredWord}
 													onClick={
 														starredWord
-															? (e) =>
-																	onClickStopPropagation(e, dispatch, {
-																		type: REMOVE_STARRED,
-																		payload: word,
-																	})
-															: (e) => onClickStopPropagation(e, dispatch, { type: ADD_STARRED, payload: word })
+															? (e) => onClickStopPropagation(e, dispatch, removeStarred(word))
+															: (e) => onClickStopPropagation(e, dispatch, addStarred(word))
 													}
 												/>
 											</Word>
@@ -95,19 +91,14 @@ const App: FC = () => {
 									<Words>
 										{state.starred?.map((starredWord, i) => {
 											return (
-												<DraggedWord key={i} index={i} onClick={() => dispatch({ type: OPEN_MODAL, payload: starredWord })}>
+												<DraggedWord key={i} index={i} onClick={() => dispatch(openModal(starredWord))}>
 													<Drag />
 													<Name>{starredWord.name}</Name>
 													<PartOfSpeech>{starredWord.partOfSpeech}</PartOfSpeech>
 													<Description>{starredWord.description}</Description>
 													<AddToFavorites
 														active={true}
-														onClick={(e) =>
-															onClickStopPropagation(e, dispatch, {
-																type: REMOVE_STARRED,
-																payload: starredWord,
-															})
-														}
+														onClick={(e) => onClickStopPropagation(e, dispatch, removeStarred(starredWord))}
 													/>
 												</DraggedWord>
 											);

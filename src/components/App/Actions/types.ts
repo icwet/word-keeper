@@ -15,3 +15,24 @@ export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 // Filter
 export const FILTER_WORDS = "FILTER_WORDS";
+
+export type Word = {
+	name: string;
+	partOfSpeech: string;
+	description: string;
+};
+export type Filter = {
+	name: string;
+	checked: boolean;
+};
+export interface InitialState {
+	words: Word[] | null;
+	starred: Word[] | null;
+	modal: Word | null;
+	filters: Filter[] | null;
+	filteredWords: Word[] | null;
+}
+export interface Action {
+	type: string;
+	payload?: any;
+}

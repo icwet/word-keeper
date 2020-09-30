@@ -6,8 +6,9 @@ import styled from "styled-components";
 // Components
 import { StyledWord } from "components/Word";
 // Actions
-import { DRAG_CARD, ITEM_TYPES } from "components/App/Actions/types";
+import { ITEM_TYPES } from "components/App/Actions/types";
 import { AppContext } from "components/App/App";
+import { dragCard } from "components/App/Actions";
 
 interface DragItem {
 	index: number;
@@ -49,7 +50,7 @@ export const DraggedWord: FC<DraggedWordProps> = ({ children, index, onClick }) 
 				return;
 			}
 
-			dispatch({ type: DRAG_CARD, payload: { dragIndex, hoverIndex } });
+			dispatch(dragCard(dragIndex, hoverIndex));
 			item.index = hoverIndex;
 		},
 	});

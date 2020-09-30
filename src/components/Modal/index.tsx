@@ -2,10 +2,10 @@ import React, { FC, useContext } from "react";
 import styled from "styled-components";
 import { AppContext } from "components/App/App";
 // State
-import { Word } from "../App/Actions";
+import { Word } from "components/App/Actions/types";
 // Images
 import cancel from "./img/cancel.svg";
-import { CLOSE_MODAL } from "../App/Actions/types";
+import { closeModal } from "components/App/Actions";
 
 interface ModalProps {
 	word: Word;
@@ -69,9 +69,9 @@ export const Modal: FC<ModalProps> = ({ word }) => {
 	const { name, partOfSpeech, description } = word;
 	return (
 		<>
-			<BackDrop onClick={() => dispatch({ type: CLOSE_MODAL })} />
+			<BackDrop onClick={() => dispatch(closeModal())} />
 			<StyledModal>
-				<CloseModal onClick={() => dispatch({ type: CLOSE_MODAL })} />
+				<CloseModal onClick={() => dispatch(closeModal())} />
 				<Title>{name}</Title>
 				<PartOfSpeech>{partOfSpeech}</PartOfSpeech>
 				<Description>{description}</Description>
