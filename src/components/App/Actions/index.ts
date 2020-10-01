@@ -9,6 +9,7 @@ import {
 	OPEN_MODAL,
 	CLOSE_MODAL,
 	FILTER_WORDS,
+	SEARCH_WORDS,
 	InitialState,
 	Action,
 	Word,
@@ -48,6 +49,8 @@ export const initialState: InitialState = {
 	modal: null,
 	filters: null,
 	filteredWords: null,
+	cachedWords: null,
+	searchLastMatch: "",
 };
 
 export const getWords = () => ({ type: GET_WORDS });
@@ -65,6 +68,7 @@ export const filterWords = (filter: Filter) => ({
 	type: FILTER_WORDS,
 	payload: { name: filter.name, checked: filter.checked },
 });
+export const searchWords = (currentSubstring: string) => ({ type: SEARCH_WORDS, payload: currentSubstring });
 
 export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 	switch (action.type) {
@@ -151,6 +155,11 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 		case FILTER_WORDS: {
 			const currentFilter = action.payload;
 			const { filters, filteredWords, starred } = state;
+			if (!starred) {
+				return {
+					...state,
+				};
+			}
 			const { name, checked } = currentFilter;
 
 			const updateFilter = filters!.map((filter) => {
@@ -204,6 +213,48 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 				...state,
 				starred: removeCurrentFilter,
 				filters: updateFilter,
+			};
+		}
+		case SEARCH_WORDS: {
+			const currentChars = action.payload;
+			const { cachedWords, starred, searchLastMatch } = state;
+			if (!starred) {
+				return {
+					...state,
+				};
+			}
+			const searchLastMatchLen = searchLastMatch.length + 1;
+			const currentCharsLen = currentChars.length;
+			const isDelete = searchLastMatchLen > currentCharsLen;
+			if (currentCharsLen === 1 && !isDelete) {
+				const searchFirstWords = starred.filter((word) => word.name.includes(currentChars));
+				return {
+					...state,
+					cachedWords: starred,
+					starred: searchFirstWords,
+					searchLastMatch: currentChars,
+				};
+			}
+			if (isDelete) {
+				const getCachedWords = cachedWords!.filter((word) => word.name.includes(currentChars));
+				return {
+					...state,
+					starred: getCachedWords,
+				};
+			}
+			if (currentCharsLen === searchLastMatchLen) {
+				const searchInStarred = starred.filter((word) => word.name.includes(currentChars));
+				return {
+					...state,
+					starred: searchInStarred,
+					searchLastMatch: currentChars,
+				};
+			}
+			console.log(state);
+			return {
+				...state,
+				starred: cachedWords,
+				cachedWords: null,
 			};
 		}
 

@@ -15,6 +15,7 @@ export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 // Filter
 export const FILTER_WORDS = "FILTER_WORDS";
+export const SEARCH_WORDS = "SEARCH_WORDS";
 
 export type Word = {
 	name: string;
@@ -31,6 +32,8 @@ export interface InitialState {
 	modal: Word | null;
 	filters: Filter[] | null;
 	filteredWords: Word[] | null;
+	cachedWords: Word[] | null;
+	searchLastMatch: string;
 }
 export interface Action {
 	type: string;

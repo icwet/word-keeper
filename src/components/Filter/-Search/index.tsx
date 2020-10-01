@@ -1,7 +1,15 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import styled from "styled-components";
+// Components
+import { AppContext } from "components/App/App";
 // images
 import magnify from "./img/magnify.svg";
+// State
+import { searchWords } from "components/App/Actions";
+
+interface FilterSearchProps {
+	starred?: boolean;
+}
 
 const StyledFilterSearch = styled.input`
 	border: 1px solid transparent;
@@ -30,10 +38,15 @@ const Magnify = styled.div`
 	}
 `;
 
-export const FilterSearch: FC = () => {
+export const FilterSearch: FC<FilterSearchProps> = ({ starred }) => {
+	const { dispatch } = useContext(AppContext);
+
 	return (
 		<Magnify>
-			<StyledFilterSearch placeholder="Enter some word..." />
+			<StyledFilterSearch
+				onChange={starred ? (e) => dispatch(searchWords(e.target.value)) : () => {}}
+				placeholder="Enter some word..."
+			/>
 		</Magnify>
 	);
 };

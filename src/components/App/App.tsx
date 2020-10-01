@@ -84,7 +84,7 @@ const App: FC = () => {
 						<Route path="/starred">
 							<Starred>
 								<Filter>
-									<FilterSearch />
+									<FilterSearch starred />
 									<FilterPartOfSpeech />
 								</Filter>
 								<DndProvider backend={HTML5Backend}>
