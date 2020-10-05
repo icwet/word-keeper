@@ -1,11 +1,12 @@
-import React, { FC, useContext } from "react";
+import React, { ChangeEvent, FC, KeyboardEventHandler, useContext } from "react";
 import styled from "styled-components";
+import Api from "api";
 // Components
 import { AppContext } from "components/App/App";
 // images
 import magnify from "./img/magnify.svg";
 // State
-import { searchWords } from "components/App/Actions";
+import { searchWords, getWords, getWordsSuccess, getWordsError } from "components/App/Actions";
 
 interface FilterSearchProps {
 	starred?: boolean;
@@ -40,11 +41,23 @@ const Magnify = styled.div`
 
 export const FilterSearch: FC<FilterSearchProps> = ({ starred }) => {
 	const { dispatch } = useContext(AppContext);
+	const starredHandler = (value: string) => {
+		dispatch(searchWords(value));
+	};
+	const mainHandler = (event: KeyboardEvent) => {
+		console.log(event);
+		/*new Api(`https://wordsapiv1.p.rapidapi.com/words/?letterPattern=${value}&limit=2`).getWords(
+			dispatch,
+			getWords,
+			getWordsSuccess,
+			getWordsError
+		);*/
+	};
 
 	return (
 		<Magnify>
 			<StyledFilterSearch
-				onChange={starred ? (e) => dispatch(searchWords(e.target.value)) : () => {}}
+				onChange={starred ? (e) => starredHandler(e.target.value) : () => {}}
 				placeholder="Enter some word..."
 			/>
 		</Magnify>

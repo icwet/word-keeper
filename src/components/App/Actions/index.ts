@@ -1,8 +1,8 @@
 import { Reducer } from "react";
 import {
 	GET_WORDS,
-	LOADING_WORDS,
 	GET_WORDS_SUCCESS,
+	GET_WORDS_ERROR,
 	ADD_STARRED,
 	REMOVE_STARRED,
 	DRAG_CARD,
@@ -54,8 +54,8 @@ export const initialState: InitialState = {
 };
 
 export const getWords = () => ({ type: GET_WORDS });
-export const loadingWords = () => ({ type: LOADING_WORDS });
-export const getWordsSuccess = () => ({ type: GET_WORDS_SUCCESS });
+export const getWordsSuccess = (words: Word[]) => ({ type: GET_WORDS_SUCCESS, payload: words });
+export const getWordsError = (e: Error) => ({ type: GET_WORDS_ERROR, payload: e });
 export const addStarred = (word: Word) => ({ type: ADD_STARRED, payload: word });
 export const removeStarred = (word: Word) => ({ type: REMOVE_STARRED, payload: word });
 export const dragCard = (dragIndex: number, hoverIndex: number) => ({
@@ -73,13 +73,17 @@ export const searchWords = (currentSubstring: string) => ({ type: SEARCH_WORDS, 
 export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 	switch (action.type) {
 		case GET_WORDS: {
-			return state;
-		}
-		case LOADING_WORDS: {
-			return state;
+			return {
+				...state,
+				loadingWords: true,
+			};
 		}
 		case GET_WORDS_SUCCESS: {
-			return state;
+			return {
+				...state,
+				loadingWords: false,
+				words: action.payload,
+			};
 		}
 
 		case ADD_STARRED: {

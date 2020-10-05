@@ -1,7 +1,7 @@
 // Get words
 export const GET_WORDS = "GET_WORDS";
-export const LOADING_WORDS = "LOADING_WORDS";
 export const GET_WORDS_SUCCESS = "LOADING_WORDS_SUCCESS";
+export const GET_WORDS_ERROR = "GET_WORDS_ERROR";
 // Add starred
 export const ADD_STARRED = "ADD_STARRED";
 export const REMOVE_STARRED = "REMOVE_STARRED";

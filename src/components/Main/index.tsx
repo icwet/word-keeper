@@ -7,6 +7,10 @@ const StyledMain = styled.main`
 	gap: 24px;
 	grid-auto-flow: column;
 	padding-top: 24px;
+	@media (max-width: 768px) {
+		grid-template-columns: 1fr;
+		grid-auto-flow: row;
+	}
 `;
 
 export const Main: FC = ({ children }) => {
