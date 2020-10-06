@@ -227,7 +227,7 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 					...state,
 				};
 			}
-			const searchLastMatchLen = searchLastMatch.length + 1;
+			const searchLastMatchLen = searchLastMatch.length;
 			const currentCharsLen = currentChars.length;
 			const isDelete = searchLastMatchLen > currentCharsLen;
 			if (currentCharsLen === 1 && !isDelete) {
@@ -239,14 +239,15 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 					searchLastMatch: currentChars,
 				};
 			}
-			if (isDelete) {
+			if (isDelete && currentCharsLen) {
 				const getCachedWords = cachedWords!.filter((word) => word.name.includes(currentChars));
 				return {
 					...state,
 					starred: getCachedWords,
+					searchLastMatch: currentChars,
 				};
 			}
-			if (currentCharsLen === searchLastMatchLen) {
+			if (currentCharsLen > searchLastMatchLen) {
 				const searchInStarred = starred.filter((word) => word.name.includes(currentChars));
 				return {
 					...state,
@@ -254,11 +255,11 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 					searchLastMatch: currentChars,
 				};
 			}
-			console.log(state);
 			return {
 				...state,
 				starred: cachedWords,
 				cachedWords: null,
+				searchLastMatch: "",
 			};
 		}
 
