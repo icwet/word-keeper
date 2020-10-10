@@ -15,16 +15,25 @@ const StyledLink = styled.div`
 		position: relative;
 		text-decoration: none;
 		color: #fff;
+		font-size: 20px;
+		&:hover {
+			background: linear-gradient(90deg, #ff8a00, #e52e71);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			-webkit-box-decoration-break: clone;
+			box-decoration-break: clone;
+			text-shadow: none;
+		}
 		&::before {
 			position: absolute;
 			top: 0;
 			bottom: 0;
-			left: -18px;
+			left: -34px;
 			margin: auto;
 			content: "";
 			display: block;
-			width: 12px;
-			height: 12px;
+			width: 24px;
+			height: 24px;
 			background: url(${star}) center/contain no-repeat;
 		}
 	}

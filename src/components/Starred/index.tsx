@@ -15,7 +15,9 @@ const StyledStarredList = styled.main`
 `;
 
 const Title = styled.h1`
-	font-weight: 500;
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: #fff;
 `;
 
 export const Starred: FC = ({ children }) => {

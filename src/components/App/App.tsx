@@ -29,7 +29,7 @@ const StyledApp = styled.div`
 	bottom: 0;
 	margin: auto;
 	padding: 24px 13% 24px 13%;
-	background: #f0dfc5;
+	background: #100e17;
 `;
 
 export const AppContext = createContext<{

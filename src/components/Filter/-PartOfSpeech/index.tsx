@@ -10,7 +10,12 @@ const StyledFilterPartOfSpeech = styled.fieldset`
 	border: none;
 `;
 const StyledLabel = styled.label`
-	color: #000;
+	display: flex;
+	align-items: center;
+	color: #fff;
+`;
+const StyleInput = styled.input`
+	margin-right: 12px;
 `;
 
 export const FilterPartOfSpeech: FC = () => {
@@ -21,7 +26,11 @@ export const FilterPartOfSpeech: FC = () => {
 				const { name, checked } = filterParam;
 				return (
 					<StyledLabel key={i}>
-						<input type="checkbox" value={name} onChange={() => dispatch(filterWords({ name, checked: !checked }))} />
+						<StyleInput
+							type="checkbox"
+							value={name}
+							onChange={() => dispatch(filterWords({ name, checked: !checked }))}
+						/>
 						{name}
 					</StyledLabel>
 				);

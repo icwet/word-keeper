@@ -4,7 +4,7 @@ import { AppContext } from "components/App/App";
 // State
 import { Word } from "components/App/Actions/types";
 // Images
-import cancel from "./img/cancel.svg";
+import close from "./img/close.svg";
 import { closeModal } from "components/App/Actions";
 
 interface ModalProps {
@@ -16,41 +16,40 @@ const StyledModal = styled.div`
 	grid-auto-rows: min-content;
 	position: fixed;
 	width: 400px;
-	height: 600px;
 	padding: 24px;
 	left: 0;
-	top: 0;
-	bottom: 0;
 	right: 0;
 	margin: auto;
+	background: #201c29;
+	color: #fff;
+	border-radius: 16px;
+	box-shadow: -1rem 0 3rem #000;
 	z-index: 100;
-	background: #fff;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 `;
 
 const Title = styled.h1`
 	font-size: 32px;
 	padding: 12px 0;
-	color: #000;
+	margin: 0;
 `;
 
 const PartOfSpeech = styled.small`
-	font-size: 14px;
-	color: #000;
+	font-size: 20px;
 `;
 
 const Description = styled.p`
-	font-size: 16px;
+	font-size: 18px;
 	padding: 12px 0;
+	margin: 0;
 `;
 
 const CloseModal = styled.div`
 	position: absolute;
-	right: 12px;
-	top: 12px;
+	right: 24px;
+	top: 24px;
 	width: 24px;
 	height: 24px;
-	background: url(${cancel}) center/contain no-repeat;
+	background: url(${close}) center/contain no-repeat;
 	cursor: pointer;
 `;
 

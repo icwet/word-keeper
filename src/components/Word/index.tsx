@@ -14,23 +14,26 @@ interface AddToFavoritesProps {
 
 // Styled components
 export const StyledWord = styled.div`
-	max-height: 35px;
+	max-height: 56px;
 	display: grid;
-	padding: 8px 12px;
 	grid-auto-flow: column;
 	grid-template-columns: auto auto 1fr auto;
 	gap: 18px;
 	align-items: center;
-	background: #fff;
-	border-radius: 4px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 16px;
+	padding: 14px 26px;
+	background: #17141d;
+	box-shadow: -1rem 0 3rem #000;
+	font-size: 18px;
+	color: #fff;
 	cursor: pointer;
+	transition: all 0.2s;
 `;
 export const Drag = styled.div`
 	position: relative;
 	width: 24px;
 	height: 1px;
-	background: #000;
+	background: #fff;
 	&::before,
 	&::after {
 		position: absolute;
@@ -38,7 +41,7 @@ export const Drag = styled.div`
 		display: block;
 		width: 100%;
 		height: 100%;
-		background: #000;
+		background: #fff;
 	}
 	&::before {
 		top: -4px;
@@ -66,8 +69,8 @@ export const Description = styled.p`
 `;
 export const AddToFavorites = styled.div<AddToFavoritesProps>`
 	justify-self: center;
-	width: 18px;
-	height: 18px;
+	width: 24px;
+	height: 24px;
 	background: url(${(props) => (props.active ? activeStar : star)}) center/contain no-repeat;
 	cursor: pointer;
 	&:hover {

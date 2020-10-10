@@ -13,14 +13,20 @@ interface FilterSearchProps {
 }
 
 const StyledFilterSearch = styled.input`
-	border: 1px solid transparent;
 	width: 100%;
-	height: 40px;
-	padding: 12px 42px 12px 12px;
-	border-radius: 4px;
+	height: 44px;
+	padding: 12px 42px 12px 24px;
+	background: #201c29;
+	font-size: 16px;
+	color: #fff;
+	border-radius: 28px;
+	border: 2px solid transparent;
+	box-shadow: inset 0 0 12px #000;
 	outline: none;
+	font-family: "Rubik", sans-serif;
+
 	&:focus {
-		border: 1px solid palevioletred;
+		border: 2px solid #fff;
 	}
 `;
 const Magnify = styled.div`
@@ -29,7 +35,7 @@ const Magnify = styled.div`
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		right: 12px;
+		right: 22px;
 		margin: auto;
 		content: "";
 		display: block;
@@ -55,7 +61,7 @@ export const FilterSearch: FC<FilterSearchProps> = ({ starred }) => {
 				lastCallTime: time,
 				lastCallTimeout: setTimeout(() => {
 					new Api(
-						`https://wordsapiv1.p.rapidapi.com/words/?letterPattern=^${searchWord.toLocaleLowerCase()}\.*&limit=2`
+						`https://wordsapiv1.p.rapidapi.com/words/?letterPattern=^${searchWord.toLowerCase()}\.*&hasDetails=partOfSpeech,definitions&limit=1`
 					).getWords(dispatch, getWords, getWordsSuccess, getWordsError);
 				}, delay),
 			};

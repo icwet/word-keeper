@@ -7,9 +7,9 @@ interface WordsProps {
 
 const StyledWords = styled.div`
 	display: grid;
-	grid-auto-rows: 35px;
+	grid-auto-rows: 56px;
 	grid-auto-flow: row;
-	gap: 8px;
+	gap: 14px;
 `;
 
 const StyledError = styled.p`
