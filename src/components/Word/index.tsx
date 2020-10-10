@@ -18,6 +18,7 @@ export const StyledWord = styled.div`
 	display: grid;
 	padding: 8px 12px;
 	grid-auto-flow: column;
+	grid-template-columns: auto auto 1fr auto;
 	gap: 18px;
 	align-items: center;
 	background: #fff;

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, KeyboardEventHandler, useContext } from "react";
+import React, { FC, FormEvent, useContext, useState } from "react";
 import styled from "styled-components";
 import Api from "api";
 // Components
@@ -40,26 +40,46 @@ const Magnify = styled.div`
 `;
 
 export const FilterSearch: FC<FilterSearchProps> = ({ starred }) => {
+	const [searchWord, setSearchWord] = useState("");
+	const [apiCall, setApiCall] = useState({ lastCallTime: 0, lastCallTimeout: 0 });
 	const { dispatch } = useContext(AppContext);
 	const starredHandler = (value: string) => {
 		dispatch(searchWords(value));
 	};
-	const mainHandler = (event: KeyboardEvent) => {
-		console.log(event);
-		/*new Api(`https://wordsapiv1.p.rapidapi.com/words/?letterPattern=${value}&limit=2`).getWords(
-			dispatch,
-			getWords,
-			getWordsSuccess,
-			getWordsError
-		);*/
+
+	const handleSubmit = (event: FormEvent) => {
+		const currentTime = Date.now();
+		const delay = 1000;
+		const createRequest = (time: number, delay: number) => {
+			return {
+				lastCallTime: time,
+				lastCallTimeout: setTimeout(() => {
+					new Api(
+						`https://wordsapiv1.p.rapidapi.com/words/?letterPattern=^${searchWord.toLocaleLowerCase()}\.*&limit=2`
+					).getWords(dispatch, getWords, getWordsSuccess, getWordsError);
+				}, delay),
+			};
+		};
+		event.preventDefault();
+		if (!apiCall.lastCallTimeout) {
+			setApiCall(createRequest(currentTime, delay));
+		}
+		clearTimeout(apiCall.lastCallTimeout);
+		setApiCall({ lastCallTime: currentTime, lastCallTimeout: 0 });
+		if (!(currentTime - apiCall.lastCallTime >= delay)) {
+			setApiCall(createRequest(currentTime, delay));
+		}
 	};
 
 	return (
 		<Magnify>
-			<StyledFilterSearch
-				onChange={starred ? (e) => starredHandler(e.target.value) : () => {}}
-				placeholder="Enter some word..."
-			/>
+			{starred ? (
+				<StyledFilterSearch onChange={(e) => starredHandler(e.target.value)} placeholder="Enter some word..." />
+			) : (
+				<form onSubmit={(e) => handleSubmit(e)}>
+					<StyledFilterSearch onChange={(e) => setSearchWord(e.target.value)} placeholder="Enter some word..." />
+				</form>
+			)}
 		</Magnify>
 	);
 };

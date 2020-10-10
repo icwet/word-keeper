@@ -20,6 +20,8 @@ interface DraggedWordProps {
 }
 
 const StyledDraggedWord = styled(StyledWord)`
+	grid-template-columns: auto auto auto 1fr auto;
+
 	&:hover {
 		cursor: grab;
 	}

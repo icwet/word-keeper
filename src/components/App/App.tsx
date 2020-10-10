@@ -16,6 +16,7 @@ import { FilterSearch } from "components/Filter/-Search";
 import { Starred } from "components/Starred";
 import { FilterPartOfSpeech } from "components/Filter/-PartOfSpeech";
 import { Modal } from "components/Modal";
+import { Loader } from "components/Loader";
 // State
 import { initialState, appReducer, openModal, removeStarred, addStarred } from "components/App/Actions";
 import { InitialState, Action } from "components/App/Actions/types";
@@ -53,13 +54,14 @@ const App: FC = () => {
 				<StyledApp>
 					<Menu />
 					{state?.modal && <Modal word={state.modal} />}
+					{state?.loadingWords && <Loader />}
 					<Switch>
 						<Route exact path="/">
 							<Main>
 								<Filter>
 									<FilterSearch />
 								</Filter>
-								<Words>
+								<Words error={state.error}>
 									{state.words?.map((word, i) => {
 										const starredWord = state.starred?.some((starredWord) => starredWord.name === word.name);
 										return (

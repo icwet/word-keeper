@@ -19,38 +19,15 @@ import {
 import update from "immutability-helper";
 
 export const initialState: InitialState = {
-	words: [
-		{
-			name: "some word1",
-			partOfSpeech: "noun",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-		{
-			name: "some word2",
-			partOfSpeech: "pronoun",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-		{
-			name: "some word3",
-			partOfSpeech: "verb",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-		{
-			name: "some word4",
-			partOfSpeech: "adjective",
-			description:
-				"lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-		},
-	],
+	words: null,
 	starred: null,
 	modal: null,
+	loadingWords: false,
 	filters: null,
 	filteredWords: null,
 	cachedWords: null,
 	searchLastMatch: "",
+	error: "",
 };
 
 export const getWords = () => ({ type: GET_WORDS });
@@ -79,10 +56,19 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 			};
 		}
 		case GET_WORDS_SUCCESS: {
+			const isEmptyData = action.payload.length;
 			return {
 				...state,
 				loadingWords: false,
-				words: action.payload,
+				words: isEmptyData ? action.payload : null,
+				error: isEmptyData ? "" : "We did not find any matches",
+			};
+		}
+		case GET_WORDS_ERROR: {
+			return {
+				...state,
+				loadingWords: false,
+				error: action.payload,
 			};
 		}
 

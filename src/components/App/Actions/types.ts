@@ -34,6 +34,8 @@ export interface InitialState {
 	filteredWords: Word[] | null;
 	cachedWords: Word[] | null;
 	searchLastMatch: string;
+	loadingWords: boolean;
+	error: string;
 }
 export interface Action {
 	type: string;
