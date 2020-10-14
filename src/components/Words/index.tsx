@@ -14,8 +14,8 @@ const StyledWords = styled.div`
 
 const StyledError = styled.p`
 	display: flex;
-	font-size: 18px;
-	color: #000;
+	font-size: 32px;
+	color: #fff;
 `;
 
 export const Words: FC<WordsProps> = ({ children, error }) => {

@@ -2,6 +2,9 @@ import React, { FC } from "react";
 import styled from "styled-components";
 
 const StyledFilter = styled.div`
+	max-height: 268px;
+	position: sticky;
+	top: 24px;
 	display: grid;
 	grid-template-rows: 1fr 4fr;
 	grid-auto-flow: row;

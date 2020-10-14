@@ -28,8 +28,9 @@ const StyledApp = styled.div`
 	right: 0;
 	bottom: 0;
 	margin: auto;
-	padding: 24px 13% 24px 13%;
+	padding: 24px 13% 64px 13%;
 	background: #100e17;
+	overflow: auto;
 `;
 
 export const AppContext = createContext<{

@@ -6,7 +6,7 @@ import { filterWords } from "components/App/Actions";
 
 const StyledFilterPartOfSpeech = styled.fieldset`
 	display: grid;
-	padding: 12px 0;
+	padding: 24px 0;
 	border: none;
 `;
 const StyledLabel = styled.label`
