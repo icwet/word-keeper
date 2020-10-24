@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "components/App/App";
-import * as ServiceWorker from "./serviceWorker";
+import DB from "db";
+
+DB.createDb();
 
 ReactDOM.render(
 	<React.StrictMode>
@@ -9,5 +11,3 @@ ReactDOM.render(
 	</React.StrictMode>,
 	document.getElementById("root")
 );
-
-ServiceWorker.register();

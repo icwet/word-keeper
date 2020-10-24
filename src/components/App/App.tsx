@@ -1,5 +1,5 @@
 // Vendor
-import React, { FC, useReducer, createContext, Dispatch } from "react";
+import React, { FC, useReducer, createContext, Dispatch, useEffect } from "react";
 import styled from "styled-components";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -20,6 +20,8 @@ import { Loader } from "components/Loader";
 // State
 import { initialState, appReducer, openModal, removeStarred, addStarred } from "components/App/Actions";
 import { InitialState, Action } from "components/App/Actions/types";
+// DB
+import DB from "db";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -47,6 +49,12 @@ const App: FC = () => {
 		event.stopPropagation();
 		dispatch(action);
 	};
+
+	/*useEffect(() => {
+		if (state.starred) {
+			DB.getStarredWords(dispatch);
+		}
+	}, []);*/
 
 	return (
 		<BrowserRouter>

@@ -17,6 +17,8 @@ import {
 } from "./types";
 // Helpers
 import update from "immutability-helper";
+// DB
+import DB from "db";
 
 export const initialState: InitialState = {
 	words: null,
@@ -75,6 +77,7 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 		case ADD_STARRED: {
 			const word = action.payload;
 			const { partOfSpeech } = word;
+			DB.addStarredWord(word);
 			if (state.starred === null) {
 				return {
 					...state,
@@ -99,6 +102,7 @@ export const appReducer: Reducer<InitialState, Action> = (state, action) => {
 		}
 		case REMOVE_STARRED: {
 			const word = action.payload;
+			DB.removeStarredWord(word.name);
 			const newStarredWords = state.starred?.filter((starredWord) => starredWord.name !== word.name);
 			const newFilters = state.filters?.filter((filter) => filter.name !== word.partOfSpeech);
 			if (newStarredWords) {
