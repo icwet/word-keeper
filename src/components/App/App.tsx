@@ -19,9 +19,9 @@ import { Modal } from "components/Modal";
 import { Loader } from "components/Loader";
 // State
 import { initialState, appReducer, openModal, removeStarred, addStarred } from "components/App/Actions";
-import { InitialState, Action } from "components/App/Actions/types";
+import { InitialState, Action, Word as WordType } from "components/App/Actions/types";
 // DB
-import DB from "db";
+import { myDB } from "../../index";
 
 const StyledApp = styled.div`
 	position: fixed;
@@ -45,9 +45,21 @@ export const AppContext = createContext<{
 
 const App: FC = () => {
 	const [state, dispatch] = useReducer(appReducer, initialState);
-	const onClickStopPropagation: CallableFunction = (event: Event, dispatch: Dispatch<Action>, action: Action) => {
+	const onClickStopPropagation: CallableFunction = (
+		event: Event,
+		dispatch: Dispatch<Action>,
+		action: Action,
+		word: WordType,
+		type: string
+	) => {
+		const { name } = word;
 		event.stopPropagation();
 		dispatch(action);
+		if (type === "remove") {
+			myDB.removeDBWithSchema(name);
+		} else {
+			myDB.putDBWithSchema(word);
+		}
 	};
 
 	/*useEffect(() => {
@@ -82,8 +94,8 @@ const App: FC = () => {
 													active={starredWord}
 													onClick={
 														starredWord
-															? (e) => onClickStopPropagation(e, dispatch, removeStarred(word))
-															: (e) => onClickStopPropagation(e, dispatch, addStarred(word))
+															? (e) => onClickStopPropagation(e, dispatch, removeStarred(word), word, "remove")
+															: (e) => onClickStopPropagation(e, dispatch, addStarred(word), word, "add")
 													}
 												/>
 											</Word>
@@ -109,7 +121,9 @@ const App: FC = () => {
 													<Description>{starredWord.description}</Description>
 													<AddToFavorites
 														active={true}
-														onClick={(e) => onClickStopPropagation(e, dispatch, removeStarred(starredWord))}
+														onClick={(e) =>
+															onClickStopPropagation(e, dispatch, removeStarred(starredWord), starredWord, "remove")
+														}
 													/>
 												</DraggedWord>
 											);

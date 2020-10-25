@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "components/App/App";
-import DB from "db";
+import DB from "./db";
 
-DB.createDb();
+export const myDB = new DB("words", 1);
 
 ReactDOM.render(
 	<React.StrictMode>

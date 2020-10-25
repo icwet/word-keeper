@@ -1,51 +1,49 @@
-import { openDB } from "idb";
+import { IDBPDatabase, openDB } from "idb";
 import { Action, Word } from "components/App/Actions/types";
 import { addStarred } from "components/App/Actions";
-import { MyDB } from "./types";
+import { MyDBSchema } from "./types";
 import { Dispatch } from "react";
 
 export default class DB {
-	static async createDb() {
-		if (!("indexedDB" in window)) {
-			console.log("This browser doesn't support IndexedDB");
-			return;
-		}
-		await openDB<MyDB>("words", 1, {
-			upgrade(database) {
-				database.createObjectStore("starredWords", { keyPath: "name" });
+	private readonly _dbName: string;
+	private readonly _dbVersion: number;
+	private _dbCreated: boolean;
+
+	constructor(dbName = "words", version = 1) {
+		this._dbName = dbName;
+		this._dbVersion = version;
+		this._dbCreated = false;
+	}
+	async _openDBWithSchema(): Promise<IDBPDatabase<MyDBSchema>> {
+		if (this._dbCreated) return openDB<MyDBSchema>(this._dbName, this._dbVersion);
+		this._dbCreated = true;
+		return openDB<MyDBSchema>(this._dbName, this._dbVersion, {
+			upgrade(db) {
+				db.createObjectStore("words-store", { keyPath: "name" });
 			},
 		});
 	}
-	static async addStarredWord(word: Word) {
-		await openDB<MyDB>("words", 1, {
-			upgrade(database) {
-				const tx = database.transaction("starredWords", "readwrite");
-				const store = tx.store;
-				store.add(word);
-				return tx.done;
-			},
-		})
-			.then(() => console.log("added word to the store"))
-			.catch((error) => console.error(error));
+
+	async putDBWithSchema(word: Word) {
+		const db = await this._openDBWithSchema();
+		const tx = db.transaction(["words-store"], "readwrite");
+		const keyStore = tx.objectStore("words-store");
+		keyStore.put(word);
+		return db;
 	}
-	static async removeStarredWord(name: string) {
-		await openDB<MyDB>("words", 1, {
-			upgrade(database) {
-				const tx = database.transaction("starredWords", "readwrite");
-				const store = tx.store;
-				store.delete(name);
-				return tx.done;
-			},
-		});
+
+	async removeDBWithSchema(name: string) {
+		const db = await this._openDBWithSchema();
+		const tx = db.transaction(["words-store"], "readwrite");
+		const keyStore = tx.objectStore("words-store");
+		keyStore.delete(name);
 	}
-	static async getStarredWords(dispatch: Dispatch<Action>) {
-		await openDB<MyDB>("words", 1, {
-			async upgrade(database) {
-				const tx = database.transaction("starredWords");
-				const store = tx.store;
-				const starredWords = await store.getAll();
-				starredWords.forEach((word) => dispatch(addStarred(word)));
-			},
-		});
+
+	async getAllDBWithSchema(dispatch: Dispatch<Action>) {
+		const db = await this._openDBWithSchema();
+		const tx = db.transaction(["words-store"], "readonly");
+		const keyStore = tx.objectStore("words-store");
+		const allWords = await keyStore.getAll();
+		allWords.forEach((word) => dispatch(addStarred(word)));
 	}
 }
