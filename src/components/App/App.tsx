@@ -62,11 +62,11 @@ const App: FC = () => {
 		}
 	};
 
-	/*useEffect(() => {
-		if (state.starred) {
-			DB.getStarredWords(dispatch);
+	useEffect(() => {
+		if (!state.starred) {
+			myDB.getAllDBWithSchema(dispatch);
 		}
-	}, []);*/
+	}, []);
 
 	return (
 		<BrowserRouter>
